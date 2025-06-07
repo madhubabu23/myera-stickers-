@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Konva Sticker Canvas</title>
+  <script src="https://cdn.jsdelivr.net/npm/konva@9.2.0/konva.min.js"></script>
+  <style>
+    body {
+      font-family: sans-serif;
+      display: flex;
+      gap: 20px;
+      padding: 20px;
+    }
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .sidebar img {
+      width: 40px;
+      height: 40px;
+      cursor: pointer;
+      border: 1px solid #ccc;
+      padding: 5px;
+    }
+    #container {
+      border: 1px solid #aaa;
+    }
+    button {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="sidebar">
+    <img src="https://res.cloudinary.com/dnfml2tzo/image/upload/v1749278110/canvas_oucubf.png" alt="Sticker 1" onclick="addSticker('stickers/sticker1.png')" />
+    <img src="https://res.cloudinary.com/dnfml2tzo/image/upload/v1749278246/painting_gso0vr.png" alt="Sticker 2" onclick="addSticker('stickers/sticker2.png')" />
+    <img src="https://res.cloudinary.com/dnfml2tzo/image/upload/v1749278291/canvas_1_ngfe1j.png" alt="Sticker 3" onclick="addSticker('stickers/sticker3.png')" />
+    <button onclick="downloadCanvas()">Export as Image</button>
+  </div>
+
+  <div id="container"></div>
+
+  <script>
+    // Create Konva stage and layer
+    const stage = new Konva.Stage({
+      container: 'container',
+      width: 600,
+      height: 400,
+    });
+
+    const layer = new Konva.Layer();
+    stage.add(layer);
+
+    function addSticker(src) {
+      const imageObj = new Image();
+      imageObj.onload = function () {
+        const sticker = new Konva.Image({
+          image: imageObj,
+          x: 50,
+          y: 50,
+          draggable: true,
+        });
+        layer.add(sticker);
+        layer.draw();
+      };
+      imageObj.src = src;
+    }
+
+    function downloadCanvas() {
+      const dataURL = stage.toDataURL();
+      const link = document.createElement('a');
+      link.download = 'canvas-export.png';
+      link.href = dataURL;
+      link.click();
+    }
+  </script>
+
+</body>
+</html>
